@@ -3,6 +3,8 @@
 // Zo weet Frank altijd precies welke slide er getoond wordt.
 import { $ } from '../shared/dom.js';
 import { MESSAGES, navigationFor, openChannel } from '../presentation/channel.js';
+import { play } from '../presentation/media.js';
+import { renderSlideImage } from '../presentation/slideImage.js';
 import { SlideView } from '../presentation/slideView.js';
 
 const PROJECTOR_URL = '/projector.html';
@@ -14,12 +16,15 @@ export class Presenter {
   #index = 0;
   #projectorConnected = false;
   #qrVisible = true;
+  #images = new Map();
 
   // `pdf` = { document, data }, `slides` met { notes, media }, `join` = { qr, code, joinUrl }
-  constructor({ pdf, slides, join, onSlideChange }) {
+  // `onSlideImage(index, image)` krijgt de huidige slide als jpg, om naar de studenten te sturen.
+  constructor({ pdf, slides, join, onSlideChange, onSlideImage = () => {} }) {
     this.slides = slides;
     this.join = join;
     this.onSlideChange = onSlideChange;
+    this.onSlideImage = onSlideImage;
     this.deck = {
       document: pdf.document,
       data: pdf.data,
@@ -65,6 +70,14 @@ export class Presenter {
 
     this.#sendState();
     this.onSlideChange(target);
+    this.#shareSlideImage(target);
+  }
+
+  // Elke slide wordt maar één keer als afbeelding getekend. Wie snel doorklikt, stuurt enkel de laatste door.
+  async #shareSlideImage(index) {
+    if (!this.#images.has(index)) this.#images.set(index, renderSlideImage(this.deck.document, index));
+    const image = await this.#images.get(index).catch(() => null);
+    if (image && index === this.#index) this.onSlideImage(index, image);
   }
 
   end() {
@@ -79,8 +92,15 @@ export class Presenter {
     if (action === 'prev') this.go(this.#index - 1);
     if (action === 'media') {
       const [element] = this.current.mediaElements;
-      if (element) element.paused ? element.play() : element.pause();
+      if (element?.paused) play(element);
+      else element?.pause();
     }
+  }
+
+  // Start de (eerste) video op de huidige slide, bv. op het juiste moment in de demoles.
+  playMedia() {
+    const [element] = this.current.mediaElements;
+    if (element?.paused) play(element);
   }
 
   #setQrVisible(visible) {

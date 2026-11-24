@@ -14,7 +14,7 @@ export function registerStudentHandlers(io, socket) {
     socket.join(rooms.students(session.code));
     session.students.add(studentId);
     emitStats(io, session);
-    reply(ack, { code: session.code });
+    reply(ack, { code: session.code, slideImage: session.slideImage });
   });
 
   onRole(socket, 'student', EVENTS.TAP, (session, _payload, ack) => {

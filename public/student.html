@@ -27,6 +27,12 @@
     </section>
 
     <section id="lesson" class="lesson" hidden>
+      <figure id="slide-preview" class="slide-preview" hidden>
+        <button id="slide-open" class="slide-open" type="button" aria-label="Slide vergroten">
+          <img id="slide-image" alt="De slide die de lector nu toont">
+        </button>
+        <figcaption><span id="slide-caption"></span> · Tik om te vergroten</figcaption>
+      </figure>
       <button id="tap" class="coin" type="button"><span id="tap-label">Ik volg het niet meer</span></button>
       <p id="tap-status" class="tap-status" aria-live="polite"></p>
 
@@ -45,6 +51,11 @@
         <p id="feedback-thanks" class="muted" hidden>Genoteerd. De lector ziet dit in het overzicht.</p>
       </article>
     </section>
+
+    <dialog id="slide-full" class="slide-full" aria-label="Slide vergroot">
+      <img id="slide-full-image" alt="De slide die de lector nu toont, vergroot">
+      <form method="dialog"><button class="btn" type="submit">Sluiten</button></form>
+    </dialog>
 
     <section id="ended" class="ended" hidden>
       <h1>De les is afgelopen</h1>

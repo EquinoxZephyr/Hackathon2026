@@ -8,6 +8,7 @@ export class Session {
     this.lecturerKey = randomBytes(16).toString('hex');
     this.slides = slides;
     this.settings = settings;
+    this.slideImage = null; // { index, image }: de slide die de lector nu toont, als jpg
     this.startedAt = Date.now();
     this.context = { transcript: '', slideIndex: 0 };
     this.students = new Set();

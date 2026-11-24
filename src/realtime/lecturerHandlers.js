@@ -3,7 +3,7 @@ import { EVENTS, LIMITS } from '../../shared/protocol.js';
 import { aiEnabled } from '../recap/gemini.js';
 import { createSession, deleteSession, getSession } from '../session/sessionStore.js';
 import { publicBaseUrl } from '../util/baseUrl.js';
-import { sanitizeSettings, sanitizeSlides } from '../util/validate.js';
+import { sanitizeSettings, sanitizeSlideImage, sanitizeSlides } from '../util/validate.js';
 import { onRole, reply, rooms } from './helpers.js';
 import { simulateConfusion } from './tapFlow.js';
 
@@ -44,6 +44,14 @@ export function registerLecturerHandlers(io, socket) {
 
   onRole(socket, 'lecturer', EVENTS.SETTINGS_UPDATE, (session, payload) => {
     session.settings = sanitizeSettings(payload);
+  });
+
+  // De huidige slide als afbeelding: de server onthoudt enkel de laatste en stuurt ze door naar de studenten.
+  onRole(socket, 'lecturer', EVENTS.SLIDE_IMAGE, (session, payload) => {
+    const slideImage = sanitizeSlideImage(payload, session.slides.length);
+    if (!slideImage) return;
+    session.slideImage = slideImage;
+    io.to(rooms.students(session.code)).emit(EVENTS.SLIDE_IMAGE, slideImage);
   });
 
   onRole(socket, 'lecturer', EVENTS.SIMULATE, (session) => simulateConfusion(io, session));

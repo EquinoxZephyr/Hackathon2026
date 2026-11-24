@@ -8,6 +8,43 @@
 .lesson { display: grid; gap: 20px; justify-items: center; padding-top: 4vh; }
 .tap-status { text-align: center; color: var(--ink-soft); max-width: 32ch; min-height: 3em; }
 
+/* De slide die de lector nu toont. */
+.slide-preview { width: 100%; margin: 0; display: grid; gap: 6px; }
+.slide-preview figcaption { color: var(--ink-soft); font-size: 0.875rem; }
+.slide-open { padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 10px; }
+.slide-preview img { width: 100%; display: block; border-radius: 10px; border: 1px solid var(--rule); background: #fff; }
+
+/* Met een slide (gsm): slide bovenaan, kleinere munt eronder, zodat alles op het scherm past. */
+.lesson.with-slide { padding-top: 0; }
+.lesson.with-slide .coin { width: min(48vw, 190px); font-size: 1.1rem; }
+
+/* Met een slide (pc): slide groot links, munt en uitleg rechts, zodat je ze naast elkaar leest. */
+@media (min-width: 900px) {
+  .student main:has(.lesson.with-slide:not([hidden])) { max-width: 1280px; }
+  .lesson.with-slide {
+    grid-template-columns: minmax(0, 1.8fr) minmax(320px, 1fr);
+    grid-template-areas: "slide coin" "slide status" "slide recap";
+    grid-template-rows: auto auto 1fr;
+    align-items: start; justify-items: stretch;
+    gap: 16px 32px; padding-top: 2vh;
+  }
+  .lesson.with-slide .slide-preview { grid-area: slide; position: sticky; top: 16px; }
+  .lesson.with-slide .coin { grid-area: coin; justify-self: center; width: 220px; font-size: 1.15rem; }
+  .lesson.with-slide .tap-status { grid-area: status; justify-self: center; }
+  .lesson.with-slide .recap { grid-area: recap; }
+}
+
+/* Vergroot: de slide zo groot als het scherm, op zwart. Knijpen om in te zoomen werkt hier gewoon. */
+.slide-full {
+  width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0;
+  border: 0; background: #000;
+}
+.slide-full[open] { display: grid; place-items: center; }
+.slide-full::backdrop { background: #000; }
+/* Altijd zo groot als het scherm toelaat, in de juiste verhouding: ook vergroten op een groot pc-scherm. */
+.slide-full img { width: 100vw; height: 100dvh; object-fit: contain; }
+.slide-full form { position: fixed; top: 12px; right: 12px; }
+
 .recap { width: 100%; display: grid; gap: 16px; padding: 20px; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); }
 .recap-slide { color: var(--ink-soft); font-size: 0.9375rem; }
 .recap-slide strong { color: var(--ink); }

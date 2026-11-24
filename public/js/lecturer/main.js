@@ -36,6 +36,7 @@ function trackSlides(slides, pdf, join, demo) {
         view.renderSlide(slides[index], index, slides.length);
         pushContext();
       },
+      onSlideImage: (index, image) => socket.emit(EVENTS.SLIDE_IMAGE, { index, image }),
     });
   } else {
     lesson.matcher = new SlideMatcher(slides, view.setMatcherStatus);
@@ -103,7 +104,13 @@ $('#start-demo').addEventListener('click', () =>
     const speed = Number($('#demo-speed').value);
     await startLesson(lecture.slides, {
       demo: true,
-      createSource: (handlers) => createDemoSource(lecture.transcript, speed, handlers),
+      pdf: lecture.pdf,
+      createSource: (handlers) =>
+        createDemoSource(lecture, speed, {
+          ...handlers,
+          onSlide: (index) => lesson.presenter.go(index),
+          onPlayMedia: () => lesson.presenter.playMedia(),
+        }),
     });
   }),
 );

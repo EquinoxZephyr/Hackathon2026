@@ -37,3 +37,12 @@ export function createMediaElement(item, { controls, muted }) {
 }
 
 export const isPlayable = (element) => element instanceof HTMLMediaElement;
+
+// Browsers blokkeren automatisch afspelen met geluid in een venster waar nog niet in geklikt werd
+// (bv. het beamervenster). Dan spelen we de video zonder geluid af in plaats van niet.
+export function play(element) {
+  element.play().catch(() => {
+    element.muted = true;
+    element.play().catch(() => {});
+  });
+}

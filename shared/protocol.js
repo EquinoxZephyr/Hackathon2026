@@ -8,6 +8,7 @@ export const EVENTS = Object.freeze({
   SESSION_JOIN: 'session:join',
   SETTINGS_UPDATE: 'settings:update',
   CONTEXT_UPDATE: 'context:update',
+  SLIDE_IMAGE: 'slide:image',
   AUDIO_REQUEST: 'audio:request',
   STATS: 'stats',
   ALERT: 'alert',
@@ -41,6 +42,10 @@ export const LIMITS = Object.freeze({
   AUDIO_SAMPLE_RATE: 16_000,
   AUDIO_REQUEST_TIMEOUT_MS: 4_000,
   MAX_AUDIO_BYTES: 2_000_000,
+  // Voorbeeld van de huidige slide voor studenten: scherp op een Full HD-scherm (pc, vergroot), klein genoeg om snel door te sturen.
+  SLIDE_IMAGE_WIDTH: 1920,
+  SLIDE_IMAGE_QUALITY: 0.75,
+  MAX_SLIDE_IMAGE_CHARS: 800_000,
 });
 
 // Talen van de spraakherkenning, met de naam zoals de lector en het taalmodel ze lezen.

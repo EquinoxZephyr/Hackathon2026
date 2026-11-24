@@ -9,7 +9,11 @@ const MESSAGES = {
   timeout: 'De server antwoordt niet. Probeer het opnieuw.',
 };
 const messageFor = (error) => MESSAGES[error.message] ?? 'Er ging iets mis. Probeer het opnieuw.';
-const HINT = 'Tik op de munt als je de draad kwijt bent. Niemand ziet wie er tikt.';
+// Op een pc (muis) noemen we ook de spatiebalk; op een gsm niet.
+const ON_PC = window.matchMedia('(pointer: fine)').matches;
+const HINT = ON_PC
+  ? 'Klik op de munt of druk op de spatiebalk als je de draad kwijt bent. Niemand ziet wie er tikt.'
+  : 'Tik op de munt als je de draad kwijt bent. Niemand ziet wie er tikt.';
 
 const screens = { join: $('#join'), lesson: $('#lesson'), ended: $('#ended') };
 const tapButton = $('#tap');
@@ -31,9 +35,20 @@ function studentId() {
 }
 const myId = studentId();
 
+// De slide die de lector nu toont (alleen als de lector presenteert met slides).
+function showSlide(slideImage) {
+  if (!slideImage) return;
+  $('#slide-image').src = slideImage.image;
+  $('#slide-full-image').src = slideImage.image;
+  $('#slide-caption').textContent = `Nu op het scherm: slide ${slideImage.index + 1}`;
+  $('#slide-preview').hidden = false;
+  $('#lesson').classList.add('with-slide');
+}
+
 async function join(code) {
-  const { code: confirmed } = await request(EVENTS.SESSION_JOIN, { code: code.trim().toUpperCase(), studentId: myId });
+  const { code: confirmed, slideImage } = await request(EVENTS.SESSION_JOIN, { code: code.trim().toUpperCase(), studentId: myId });
   joinedCode = confirmed;
+  showSlide(slideImage);
   history.replaceState(null, '', `?code=${confirmed}`);
   $('#lesson-code').textContent = `Les ${confirmed}`;
   showOnly(Object.values(screens), screens.lesson);
@@ -71,6 +86,7 @@ function cooldown() {
     if (seconds <= 0) {
       tapButton.disabled = false;
       tapLabel.textContent = tapLabelText;
+      setStatus(HINT);
       return;
     }
     tapLabel.textContent = `Opnieuw over ${seconds} s`;
@@ -116,12 +132,48 @@ $('#join-form').addEventListener('submit', async (event) => {
 });
 
 tapButton.addEventListener('click', tap);
+
+// Spatiebalk = "ik volg het niet meer", zolang je niet in een veld typt of de slide vergroot bekijkt.
+document.addEventListener('keydown', (event) => {
+  const typing = event.target.closest('input, textarea, select, button');
+  if (event.key !== ' ' || typing || screens.lesson.hidden || $('#slide-full').open) return;
+  event.preventDefault();
+  if (!tapButton.disabled) tap();
+});
 $('#clear').addEventListener('click', () => sendFeedback(true));
 $('#unclear').addEventListener('click', () => sendFeedback(false));
 
 socket.on(EVENTS.RECAP_UPDATE, (recap) => {
   if (recap.id === currentRecapId) renderRecap(recap);
 });
+// Vergroten: volledig scherm, en op toestellen die het toelaten (Android) meteen liggend.
+// Lukt dat niet (bv. iPhone), dan vult de slide gewoon het scherm en kan de student de gsm zelf draaien.
+async function openSlide() {
+  $('#slide-full').showModal();
+  try {
+    await document.documentElement.requestFullscreen();
+    await screen.orientation.lock('landscape');
+  } catch {
+    // Niet ondersteund: de vergrote weergave werkt ook zonder.
+  }
+}
+
+function closeSlide() {
+  $('#slide-full').close();
+  screen.orientation?.unlock?.();
+  if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+}
+
+$('#slide-open').addEventListener('click', openSlide);
+$('#slide-full form button').addEventListener('click', (event) => {
+  event.preventDefault();
+  closeSlide();
+});
+$('#slide-full').addEventListener('cancel', (event) => {
+  event.preventDefault();
+  closeSlide();
+});
+socket.on(EVENTS.SLIDE_IMAGE, showSlide);
 socket.on(EVENTS.SESSION_ENDED, () => showOnly(Object.values(screens), screens.ended));
 onReconnect(() => {
   if (joinedCode) join(joinedCode).catch(() => showOnly(Object.values(screens), screens.ended));

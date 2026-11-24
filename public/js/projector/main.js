@@ -2,6 +2,7 @@
 // Alles komt binnen via het kanaal met het andere venster; er is geen verbinding met de server nodig.
 import { $ } from '../shared/dom.js';
 import { MESSAGES, navigationFor, openChannel } from '../presentation/channel.js';
+import { play } from '../presentation/media.js';
 import { openPdf } from '../presentation/pdfjs.js';
 import { SlideView } from '../presentation/slideView.js';
 
@@ -36,7 +37,7 @@ function applyMedia({ slide, item, action, time }) {
   const element = mediaElement(item);
   if (!element) return;
   if (Math.abs(element.currentTime - time) > 0.5) element.currentTime = time;
-  if (action === 'play') element.play().catch(() => {});
+  if (action === 'play') play(element);
   if (action === 'pause') element.pause();
 }
 

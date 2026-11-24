@@ -27,10 +27,17 @@ export function keyTerms(slides) {
 export const slidesForServer = (slides) =>
   slides.map(({ title, text, notes = '' }) => ({ title, text, notes }));
 
+// De demoles: een vaste tekst met tijdstippen, plus een echte presentatie (pdf + PowerPoint),
+// ingeladen op dezelfde manier als bij een eigen les.
 export async function loadDemoLecture() {
-  const response = await fetch('/demo/lecture.json');
-  if (!response.ok) throw new Error('De demoles kon niet geladen worden.');
-  return response.json();
+  const fetchOk = async (path) => {
+    const response = await fetch(`/demo/${path}`);
+    if (!response.ok) throw new Error('De demoles kon niet geladen worden.');
+    return response;
+  };
+  const lecture = await (await fetchOk('lecture.json')).json();
+  const files = await Promise.all(lecture.presentation.map(async (name) => new File([await (await fetchOk(name)).blob()], name)));
+  return { ...lecture, ...(await loadPresentation(files)) };
 }
 
 // Een presentatie uit één of twee bestanden:

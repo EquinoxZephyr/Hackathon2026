@@ -165,15 +165,21 @@ export function createMicSource({ onText, onStatus, onInterim = () => {}, onLeve
   };
 }
 
-export function createDemoSource(segments, speed, { onText, onStatus }) {
+// De demoles speelt een vaste tekst af en bedient zelf de presentatie: naar een slide gaan (`onSlide`)
+// en de video op de slide starten (`onPlayMedia`), op de tijdstippen uit de demotekst.
+export function createDemoSource({ transcript, cues = [] }, speed, { onText, onStatus, onSlide = () => {}, onPlayMedia = () => {} }) {
   let timers = [];
   const delay = (seconds) => (seconds * 1000) / speed;
+  const at = (seconds, action) => setTimeout(action, delay(seconds));
 
   return {
     start() {
       onStatus(`Demoles speelt af (${speed}x)`);
-      timers = segments.map((segment) => setTimeout(() => onText(segment.text), delay(segment.t)));
-      timers.push(setTimeout(() => onStatus('Demoles afgelopen'), delay(segments.at(-1).t + 5)));
+      timers = [
+        ...transcript.map((segment) => at(segment.t, () => onText(segment.text))),
+        ...cues.map((cue) => at(cue.t, () => (cue.playMedia ? onPlayMedia() : onSlide(cue.slide)))),
+        at(transcript.at(-1).t + 5, () => onStatus('Demoles afgelopen')),
+      ];
     },
     stop() {
       timers.forEach(clearTimeout);

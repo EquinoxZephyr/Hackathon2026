@@ -1,11 +1,13 @@
 {
-  "slides": [
-    { "title": "Wat is recursie?", "text": "Een functie die zichzelf aanroept. Je splitst een groot probleem op in een kleiner probleem van dezelfde soort, zoals matroesjkapoppen." },
-    { "title": "Basisgeval en recursieve stap", "text": "Basisgeval: het moment waarop de functie stopt. Recursieve stap: de functie roept zichzelf aan met een kleinere invoer. Zonder basisgeval stopt de functie nooit." },
-    { "title": "Voorbeeld: faculteit", "text": "faculteit(n) = n * faculteit(n - 1). faculteit(0) = 1. faculteit(4) = 4 * 3 * 2 * 1 = 24." },
-    { "title": "De call stack", "text": "Elke aanroep krijgt een eigen frame op de call stack met een eigen waarde voor n. De frames worden pas afgebouwd als het basisgeval bereikt is. Te diepe recursie geeft een stack overflow." },
-    { "title": "Recursie versus iteratie", "text": "Elke recursieve functie kan je herschrijven met een lus. Recursie is vaak korter en leesbaarder, iteratie is zuiniger met geheugen." },
-    { "title": "Staartrecursie", "text": "Bij staartrecursie is de recursieve aanroep de laatste bewerking. Sommige talen optimaliseren dit zodat de stack niet groeit. JavaScript en Python doen dat niet." }
+  "presentation": ["recursie.pdf", "recursie.pptx"],
+  "cues": [
+    { "t": 0, "slide": 0 },
+    { "t": 34, "slide": 1 },
+    { "t": 69, "slide": 2 },
+    { "t": 116, "slide": 3 },
+    { "t": 125, "playMedia": true },
+    { "t": 189, "slide": 4 },
+    { "t": 224, "slide": 5 }
   ],
   "transcript": [
     { "t": 0, "text": "Goedemorgen allemaal. Vandaag gaan we het hebben over recursie, een onderwerp waar veel studenten het moeilijk mee hebben." },

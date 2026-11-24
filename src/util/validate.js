@@ -23,6 +23,14 @@ export function sanitizeAudio(value) {
   return value.toString('ascii', 0, 4) === 'RIFF' && value.toString('ascii', 8, 12) === 'WAVE' ? value : null;
 }
 
+// Voorbeeld van de huidige slide: enkel een jpg als data-URL, niet groter dan nodig.
+export function sanitizeSlideImage(payload, slideCount) {
+  const { index, image } = payload ?? {};
+  const valid = Number.isInteger(index) && index >= 0 && index < slideCount
+    && typeof image === 'string' && image.startsWith('data:image/jpeg;base64,') && image.length <= LIMITS.MAX_SLIDE_IMAGE_CHARS;
+  return valid ? { index, image } : null;
+}
+
 export function sanitizeId(value) {
   return typeof value === 'string' && /^[A-Za-z0-9-]{1,64}$/.test(value) ? value : null;
 }
