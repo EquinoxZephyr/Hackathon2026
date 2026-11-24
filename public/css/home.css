@@ -1,0 +1,15 @@
+.home main { max-width: 980px; margin: 0 auto; padding: 0 20px 48px; display: grid; gap: 48px; }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 32px; align-items: center; padding-top: 6vh; }
+.hero h1 { font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1.02; letter-spacing: -0.02em; }
+.hero p { margin-top: 18px; font-size: 1.1875rem; max-width: 46ch; color: var(--ink-soft); }
+.hero .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.hero .coin { justify-self: center; width: min(60vw, 280px); font-size: 1.45rem; text-decoration: none; }
+
+.try { display: grid; gap: 14px; max-width: 640px; }
+.try ol { margin: 0; padding-left: 1.4em; display: grid; gap: 8px; }
+
+@media (max-width: 720px) {
+  .hero { grid-template-columns: 1fr; padding-top: 2vh; }
+  .hero .coin { order: -1; }
+}

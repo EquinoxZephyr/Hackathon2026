@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;800&display=swap');
+
+/* Kleuren: inktblauw op geruit papier, metaal voor de munt, fluo voor wat er gezegd werd. */
+:root {
+  --paper: #eef1f5;
+  --grid: #e1e6ee;
+  --surface: #ffffff;
+  --ink: #16223d;
+  --ink-soft: #56607a;
+  --rule: #d3d9e3;
+  --blue: #2342c9;
+  --on-blue: #ffffff;
+  --marker: #ffe45c;
+  --marker-strength: 60%;
+  --marker-ink: #16223d;
+  --danger: #b42318;
+  --nickel-light: #f6f7f9;
+  --nickel: #c3c8cf;
+  --nickel-dark: #8a919b;
+  --coin-ink: #28303d;
+  --radius: 14px;
+  --font: 'Atkinson Hyperlegible Next', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0e1524;
+    --grid: #141d30;
+    --surface: #162038;
+    --ink: #e7ebf3;
+    --ink-soft: #9aa5bd;
+    --rule: #28345a;
+    --blue: #8ea2ff;
+    --on-blue: #0e1524;
+    --marker: #f2cf3f;
+    --marker-strength: 92%;
+    --danger: #ff8a80;
+    color-scheme: dark;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  font: 400 1.0625rem/1.55 var(--font);
+}
+
+h1, h2, h3, p { margin: 0; }
+h1 { font-size: clamp(1.6rem, 4vw, 2.25rem); line-height: 1.15; font-weight: 800; letter-spacing: -0.01em; }
+h2 { font-size: 1.125rem; line-height: 1.3; font-weight: 800; }
+a { color: var(--blue); }
+[hidden] { display: none !important; }
+
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+.muted { color: var(--ink-soft); font-size: 0.9375rem; }
+.error { color: var(--danger); font-weight: 600; }
+
+/* Kop */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 14px 20px;
+}
+.brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  color: var(--ink); text-decoration: none; font-weight: 800; font-size: 1.25rem;
+}
+.brand-coin {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--nickel-light), var(--nickel) 60%, var(--nickel-dark));
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.45), inset 0 0 0 3px rgba(0, 0, 0, 0.12);
+}
+
+/* Knoppen en velden */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 10px 18px;
+  font: 600 1rem/1.2 var(--font); text-decoration: none; cursor: pointer;
+  color: var(--ink); background: var(--surface);
+  border: 1.5px solid var(--rule); border-radius: 10px;
+}
+.btn:hover { border-color: var(--blue); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary { color: var(--on-blue); background: var(--blue); border-color: var(--blue); }
+.btn-primary:hover { filter: brightness(1.08); }
+.btn-danger { color: var(--danger); }
+
+input, select {
+  min-height: 44px; padding: 8px 12px;
+  font: inherit; color: var(--ink); background-color: var(--surface);
+  border: 1.5px solid var(--rule); border-radius: 10px;
+}
+input:hover, select:hover { border-color: var(--blue); }
+
+/* Eigen pijltje, zodat de keuzelijst in elk thema en elke browser hetzelfde oogt. */
+select {
+  appearance: none;
+  padding-right: 38px;
+  cursor: pointer;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--ink-soft) 50%),
+    linear-gradient(135deg, var(--ink-soft) 50%, transparent 50%);
+  background-position: calc(100% - 20px) 52%, calc(100% - 15px) 52%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+}
+select option { background: var(--surface); color: var(--ink); }
+
+/* Bestandskeuze: het echte veld blijft bruikbaar met toetsenbord en schermlezer, maar is onzichtbaar. */
+.file-picker { position: relative; display: flex; align-items: center; gap: 12px; min-width: 0; cursor: pointer; }
+.file-picker input { position: absolute; inset: 0; opacity: 0; width: 100%; cursor: pointer; }
+.file-picker:hover .btn { border-color: var(--blue); }
+.file-picker:focus-within .btn { outline: 3px solid var(--blue); outline-offset: 3px; }
+.panel { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 20px; }
+
+/* Fluo: alles wat letterlijk gezegd werd */
+.marker {
+  --marker-fill: color-mix(in srgb, var(--marker) var(--marker-strength), transparent);
+  background: linear-gradient(transparent 10%, var(--marker-fill) 10%, var(--marker-fill) 90%, transparent 90%);
+  color: var(--marker-ink);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0 2px;
+}
+
+/* De munt: het enige opvallende element */
+.coin {
+  position: relative;
+  display: grid; place-items: center;
+  width: min(68vw, 250px); aspect-ratio: 1;
+  padding: 28px;
+  border: none; border-radius: 50%; cursor: pointer;
+  color: var(--coin-ink);
+  font: 800 1.3rem/1.2 var(--font); text-align: center;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  background: radial-gradient(circle at 34% 28%, var(--nickel-light), var(--nickel) 58%, var(--nickel-dark));
+  box-shadow:
+    inset 0 0 0 7px rgba(255, 255, 255, 0.35),
+    inset 0 0 0 10px rgba(0, 0, 0, 0.1),
+    0 6px 0 var(--nickel-dark),
+    0 16px 28px rgba(14, 21, 36, 0.28);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.coin:active:not(:disabled), .coin:active:any-link {
+  transform: translateY(5px);
+  box-shadow:
+    inset 0 0 0 7px rgba(255, 255, 255, 0.35),
+    inset 0 0 0 10px rgba(0, 0, 0, 0.1),
+    0 1px 0 var(--nickel-dark),
+    0 6px 12px rgba(14, 21, 36, 0.25);
+}
+.coin:disabled { cursor: not-allowed; opacity: 0.6; }
+
+/* Cijfers: getal groot, uitleg ernaast */
+.figures { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.figure { display: flex; align-items: baseline; gap: 6px; }
+.figure strong { font-size: 1.5rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.figure span { color: var(--ink-soft); font-size: 0.9375rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

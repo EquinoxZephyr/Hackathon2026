@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Frank · Beamer</title>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/presentation.css">
+  <link rel="stylesheet" href="/css/projector.css">
+  <script type="module" src="/js/projector/main.js"></script>
+</head>
+<body class="projector">
+  <div id="slide" class="projector-slide" aria-live="off"></div>
+
+  <p id="waiting" class="projector-message">Wachten op de presentatie…<br>Start een les met slides in het andere venster.</p>
+  <p id="ended" class="projector-message" hidden>De les is afgelopen.</p>
+
+  <aside id="join" class="projector-join" hidden>
+    <img id="join-qr" alt="QR-code om mee te doen met de les">
+    <div>
+      <p>Kwijt in de les? Doe mee op je gsm.</p>
+      <p id="join-code" class="projector-code"></p>
+      <p id="join-url" class="projector-url"></p>
+    </div>
+  </aside>
+
+  <button id="fullscreen" class="btn projector-fullscreen" type="button">Volledig scherm (F)</button>
+</body>
+</html>

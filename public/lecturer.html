@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Frank · Lector</title>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/presentation.css">
+  <link rel="stylesheet" href="/css/lecturer.css">
+  <script type="module" src="/js/lecturer/main.js"></script>
+</head>
+<body class="lecturer">
+  <header class="topbar">
+    <a href="/" class="brand"><span class="brand-coin" aria-hidden="true"></span>Frank</a>
+    <div id="live-actions" class="live-actions" hidden>
+      <label class="switch"><input id="loud-alerts" type="checkbox" checked>Opvallende meldingen</label>
+      <button id="simulate" class="btn" type="button">Simuleer verwarring</button>
+      <button id="end" class="btn btn-danger" type="button">Beëindig les</button>
+    </div>
+  </header>
+
+  <div id="alert-banner" class="alert-banner" role="alert" hidden>
+    <div>
+      <strong id="alert-banner-title"></strong>
+      <span id="alert-banner-detail"></span>
+    </div>
+    <button id="alert-banner-close" class="btn" type="button">Begrepen</button>
+  </div>
+
+  <dialog id="pdf-help" class="help-dialog" aria-labelledby="pdf-help-title">
+    <h2 id="pdf-help-title">Je PowerPoint opslaan als pdf</h2>
+    <ol>
+      <li><strong>PowerPoint op Windows:</strong> Bestand → Exporteren → PDF/XPS-document maken → Publiceren.</li>
+      <li><strong>PowerPoint op Mac:</strong> Bestand → Exporteren → kies bij Bestandsindeling "PDF" → Exporteren.</li>
+      <li><strong>PowerPoint online:</strong> Bestand → Downloaden als → Downloaden als pdf.</li>
+    </ol>
+    <p class="muted">Verborgen slides komen niet in de pdf, en dat is goed zo: Frank slaat ze in je PowerPoint ook over. Pas je later iets aan in je slides, maak dan ook de pdf opnieuw.</p>
+    <form method="dialog"><button class="btn btn-primary">Begrepen</button></form>
+  </dialog>
+
+  <dialog id="pdf-only" class="help-dialog" aria-labelledby="pdf-only-title">
+    <h2 id="pdf-only-title">Video's spelen niet af met alleen een pdf</h2>
+    <p>Staan er video's in je presentatie? Die kan Frank alleen afspelen als je ook je PowerPoint toevoegt. Je notities komen er dan ook bij.</p>
+    <form method="dialog">
+      <button id="start-without-pptx" class="btn" type="button">Starten zonder video's</button>
+      <button id="add-pptx" class="btn btn-primary" type="button">PowerPoint toevoegen</button>
+    </form>
+  </dialog>
+
+  <main>
+    <section id="setup" class="setup">
+      <h1>Start een les</h1>
+      <div class="options">
+        <div class="option panel">
+          <h2>Demoles over recursie</h2>
+          <p>Vier minuten les met 30 gesimuleerde studenten. Je hebt geen microfoon of slides nodig.</p>
+          <label class="field">Snelheid
+            <select id="demo-speed">
+              <option value="1">Normaal</option>
+              <option value="2">2x</option>
+              <option value="4">4x</option>
+            </select>
+          </label>
+          <button id="start-demo" class="btn btn-primary" type="button">Start demoles</button>
+        </div>
+
+        <form id="start-own" class="option panel">
+          <h2>Eigen les</h2>
+          <p id="slides-hint" aria-live="polite">Kies je slides als pdf. Met je PowerPoint erbij krijg je ook notities en video's. <button type="button" class="link-button" data-pdf-help>Hoe maak ik een pdf?</button></p>
+          <div class="pickers">
+            <label class="file-picker">
+              <input id="pdf-file" type="file" accept=".pdf">
+              <span class="btn">Slides als pdf</span>
+            </label>
+            <label class="file-picker">
+              <input id="pptx-file" type="file" accept=".pptx,.ppt">
+              <span class="btn">PowerPoint (optioneel)</span>
+            </label>
+          </div>
+          <button class="btn" type="submit">Start les</button>
+        </form>
+      </div>
+      <p id="setup-error" class="error" role="alert" hidden></p>
+    </section>
+
+    <section id="live" class="console" hidden>
+      <section id="stage" class="stage" hidden aria-label="Presentatie">
+        <div id="stage-current" class="stage-current"></div>
+        <div class="stage-bar">
+          <div class="stage-nav">
+            <button id="prev-slide" class="btn" type="button" aria-label="Vorige slide">Vorige</button>
+            <span id="slide-counter" class="slide-counter"></span>
+            <button id="next-slide" class="btn btn-primary" type="button" aria-label="Volgende slide">Volgende</button>
+          </div>
+          <div class="stage-projector">
+            <span id="projector-status" class="muted">Beamervenster is niet open</span>
+            <button id="open-projector" class="btn" type="button">Beamervenster openen</button>
+            <button id="toggle-qr" class="btn" type="button"></button>
+          </div>
+        </div>
+        <div class="stage-lower">
+          <div class="stage-next-panel">
+            <h2>Volgende slide</h2>
+            <div id="stage-next" class="stage-next"></div>
+            <p id="next-empty" class="muted" hidden>Dit is de laatste slide.</p>
+          </div>
+          <div class="notes-panel">
+            <h2>Notities</h2>
+            <p id="notes" class="notes"></p>
+          </div>
+        </div>
+      </section>
+
+      <aside class="join panel">
+        <img id="qr" alt="QR-code om mee te doen met de les">
+        <p id="code" class="join-code"></p>
+        <a id="join-url" target="_blank" rel="noopener"></a>
+        <div id="stats" class="figures"></div>
+        <ul class="status">
+          <li id="lesson-settings" class="lesson-settings" hidden>
+            <label for="language">Hoofdtaal van de les</label>
+            <select id="language"></select>
+            <label class="switch"><input id="multilingual" type="checkbox">Meertalige les</label>
+            <p class="hint">Gebruik je vaak Engelse of Franse zinnen? Dan luistert de AI bij een tik ook naar de laatste 30 seconden geluid. Iets duurder, maar het begrijpt anderstalige stukken.</p>
+          </li>
+          <li id="source-status"></li>
+          <li id="mic-meter" class="mic-meter" hidden>
+            <span>Geluid</span>
+            <span class="level" aria-hidden="true"><span id="mic-level"></span></span>
+          </li>
+          <li id="matcher-status"></li>
+          <li id="ai-status"></li>
+        </ul>
+      </aside>
+
+      <div class="console-main">
+        <section class="now">
+          <p id="slide-pos" class="muted"></p>
+          <h1 id="slide-title"></h1>
+          <p id="no-preview" class="no-preview" hidden>Je slides worden niet getoond omdat er geen pdf bij zat. Frank raadt de slide uit wat je zegt. Voor de presentatieweergave: start een nieuwe les en kies je slides als pdf.</p>
+        </section>
+        <section>
+          <h2>Meldingen</h2>
+          <ul id="alerts" class="alerts"><li class="muted">Nog geen meldingen. Je krijgt er een als veel studenten tegelijk de draad kwijt zijn.</li></ul>
+          <details id="older-alerts" class="older-alerts" hidden>
+            <summary id="older-alerts-summary"></summary>
+            <ul id="older-alerts-list" class="alerts"></ul>
+          </details>
+        </section>
+        <section>
+          <h2>Wat er net gezegd werd</h2>
+          <p id="interim" class="interim" aria-live="off" hidden></p>
+          <ol id="transcript" class="transcript"><li class="muted">Nog niets gehoord.</li></ol>
+        </section>
+      </div>
+    </section>
+
+    <section id="overview" class="overview" hidden>
+      <h1>Overzicht van de les</h1>
+      <div id="summary-stats" class="figures"></div>
+      <section>
+        <h2>Tikken per slide</h2>
+        <div id="per-slide" class="bars"></div>
+      </section>
+      <section>
+        <h2>Meldingen</h2>
+        <ul id="summary-alerts" class="alerts"></ul>
+      </section>
+      <div><a class="btn btn-primary" href="/lecturer.html">Nieuwe les starten</a></div>
+    </section>
+  </main>
+</body>
+</html>

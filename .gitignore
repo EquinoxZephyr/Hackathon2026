@@ -1,0 +1,6 @@
+node_modules/
+.env
+npm-debug.log*
+.DS_Store
+# Testpresentatie om lokaal mee te testen; geen deel van de app.
+testmateriaal/

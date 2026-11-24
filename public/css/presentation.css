@@ -1,0 +1,11 @@
+/* Eén slide met de video's erop: gedeeld door de presentatieweergave en het beamervenster. */
+.slide-frame { position: relative; line-height: 0; }
+.slide-frame canvas { display: block; }
+.slide-media { position: absolute; inset: 0; }
+.slide-media-item { position: absolute; border: 0; background: #000; }
+audio.slide-media-item { background: transparent; height: auto !important; }
+.slide-media-notice {
+  display: grid; place-items: center; padding: 12px;
+  background: rgba(14, 21, 36, 0.85); color: #fff;
+  font: 600 0.95rem/1.4 var(--font); text-align: center;
+}

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Frank · Student</title>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/student.css">
+  <script type="module" src="/js/student/main.js"></script>
+</head>
+<body class="student">
+  <header class="topbar">
+    <a href="/" class="brand"><span class="brand-coin" aria-hidden="true"></span>Frank</a>
+    <span id="lesson-code" class="lesson-code"></span>
+  </header>
+
+  <main>
+    <section id="join" class="join-screen">
+      <h1>Doe mee met de les</h1>
+      <p class="muted">Typ de code die op het scherm van de lector staat.</p>
+      <form id="join-form" class="join-form">
+        <label for="code-input" class="sr-only">Code van de les</label>
+        <input id="code-input" maxlength="4" autocomplete="off" autocapitalize="characters" required>
+        <button class="btn btn-primary" type="submit">Doe mee</button>
+      </form>
+      <p id="join-error" class="error" role="alert" hidden></p>
+    </section>
+
+    <section id="lesson" class="lesson" hidden>
+      <button id="tap" class="coin" type="button"><span id="tap-label">Ik volg het niet meer</span></button>
+      <p id="tap-status" class="tap-status" aria-live="polite"></p>
+
+      <article id="recap" class="recap" hidden aria-live="polite">
+        <p class="recap-slide">Over <strong id="recap-slide"></strong></p>
+        <p id="recap-text" class="recap-text"></p>
+        <figure class="said">
+          <figcaption id="snippet-label">Wat er net gezegd werd</figcaption>
+          <blockquote><span id="recap-snippet" class="marker"></span></blockquote>
+        </figure>
+        <p id="recap-source" class="muted"></p>
+        <div id="feedback" class="feedback">
+          <button id="clear" class="btn btn-primary" type="button">Mijn frank is gevallen</button>
+          <button id="unclear" class="btn" type="button">Nog niet helemaal</button>
+        </div>
+        <p id="feedback-thanks" class="muted" hidden>Genoteerd. De lector ziet dit in het overzicht.</p>
+      </article>
+    </section>
+
+    <section id="ended" class="ended" hidden>
+      <h1>De les is afgelopen</h1>
+      <p class="muted">Bedankt om mee te doen.</p>
+    </section>
+  </main>
+</body>
+</html>

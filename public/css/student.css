@@ -1,0 +1,27 @@
+.student main { max-width: 520px; margin: 0 auto; padding: 8px 16px 40px; display: grid; gap: 24px; }
+.lesson-code { font-weight: 600; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+
+.join-screen, .ended { display: grid; gap: 14px; padding-top: 8vh; }
+.join-form { display: flex; gap: 8px; }
+.join-form input { flex: 1; min-width: 0; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 800; font-size: 1.25rem; }
+
+.lesson { display: grid; gap: 20px; justify-items: center; padding-top: 4vh; }
+.tap-status { text-align: center; color: var(--ink-soft); max-width: 32ch; min-height: 3em; }
+
+.recap { width: 100%; display: grid; gap: 16px; padding: 20px; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); }
+.recap-slide { color: var(--ink-soft); font-size: 0.9375rem; }
+.recap-slide strong { color: var(--ink); }
+.recap-text { font-size: 1.125rem; line-height: 1.6; }
+.recap.is-streaming .recap-text::after {
+  content: '';
+  display: inline-block; width: 0.5em; height: 1.1em; margin-left: 2px; vertical-align: -0.15em;
+  background: var(--blue); animation: caret 1s steps(2) infinite;
+}
+@keyframes caret { 50% { opacity: 0; } }
+
+.said { margin: 0; display: grid; gap: 6px; }
+.said figcaption { color: var(--ink-soft); font-size: 0.875rem; }
+.said blockquote { margin: 0; line-height: 1.7; }
+
+.feedback { display: flex; flex-wrap: wrap; gap: 8px; }
+.feedback .btn { flex: 1 1 auto; }

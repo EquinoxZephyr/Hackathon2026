@@ -1,0 +1,30 @@
+/* Het beamervenster: zwart, enkel de slide, zonder rasterpapier. */
+body.projector {
+  height: 100vh; margin: 0; overflow: hidden;
+  background: #000; background-image: none; color: #fff;
+  cursor: none;
+}
+body.projector:hover { cursor: default; }
+
+.projector-slide { position: fixed; inset: 0; display: grid; place-items: center; }
+
+.projector-message {
+  position: fixed; inset: 0; display: grid; place-content: center;
+  text-align: center; font-size: 1.4rem; line-height: 1.6; color: #c3c8cf;
+}
+
+/* QR-code om mee te doen: rechtsonder, groot genoeg om vanaf de achterste rij te scannen. */
+.projector-join {
+  position: fixed; right: 3vw; bottom: 3vh;
+  display: flex; align-items: center; gap: 20px;
+  padding: 18px 22px; border-radius: 16px;
+  background: #fff; color: #16223d;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+.projector-join img { width: min(22vh, 220px); aspect-ratio: 1; }
+.projector-join p { margin: 0; font-size: 1.15rem; font-weight: 600; }
+.projector-code { font-size: 2.6rem !important; font-weight: 800 !important; letter-spacing: 0.15em; }
+.projector-url { font-size: 0.95rem !important; font-weight: 400 !important; color: #56607a; }
+
+.projector-fullscreen { position: fixed; top: 16px; right: 16px; opacity: 0.85; }
+:fullscreen .projector-fullscreen { display: none; }

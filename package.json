@@ -1,0 +1,21 @@
+{
+  "name": "frank",
+  "version": "0.1.0",
+  "description": "Frank: anoniem aangeven dat je de draad kwijt bent tijdens een hoorcollege en meteen uitleg krijgen.",
+  "private": true,
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@google/genai": "^1.0.0",
+    "express": "^4.21.2",
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.8.1"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "slides": [
+    { "title": "Wat is recursie?", "text": "Een functie die zichzelf aanroept. Je splitst een groot probleem op in een kleiner probleem van dezelfde soort, zoals matroesjkapoppen." },
+    { "title": "Basisgeval en recursieve stap", "text": "Basisgeval: het moment waarop de functie stopt. Recursieve stap: de functie roept zichzelf aan met een kleinere invoer. Zonder basisgeval stopt de functie nooit." },
+    { "title": "Voorbeeld: faculteit", "text": "faculteit(n) = n * faculteit(n - 1). faculteit(0) = 1. faculteit(4) = 4 * 3 * 2 * 1 = 24." },
+    { "title": "De call stack", "text": "Elke aanroep krijgt een eigen frame op de call stack met een eigen waarde voor n. De frames worden pas afgebouwd als het basisgeval bereikt is. Te diepe recursie geeft een stack overflow." },
+    { "title": "Recursie versus iteratie", "text": "Elke recursieve functie kan je herschrijven met een lus. Recursie is vaak korter en leesbaarder, iteratie is zuiniger met geheugen." },
+    { "title": "Staartrecursie", "text": "Bij staartrecursie is de recursieve aanroep de laatste bewerking. Sommige talen optimaliseren dit zodat de stack niet groeit. JavaScript en Python doen dat niet." }
+  ],
+  "transcript": [
+    { "t": 0, "text": "Goedemorgen allemaal. Vandaag gaan we het hebben over recursie, een onderwerp waar veel studenten het moeilijk mee hebben." },
+    { "t": 8, "text": "Recursie betekent eigenlijk gewoon dat een functie zichzelf aanroept." },
+    { "t": 15, "text": "Het idee is dat je een groot probleem opsplitst in een kleiner probleem van precies dezelfde soort." },
+    { "t": 24, "text": "Denk aan matroesjkapoppen: in elke pop zit een kleinere pop, tot je bij de allerkleinste komt." },
+    { "t": 34, "text": "Elke recursieve functie heeft twee delen. Het eerste deel is het basisgeval." },
+    { "t": 42, "text": "Het basisgeval is het moment waarop de functie stopt en zichzelf niet meer aanroept." },
+    { "t": 50, "text": "Het tweede deel is de recursieve stap. Daar roept de functie zichzelf aan met een kleinere invoer." },
+    { "t": 59, "text": "Als je het basisgeval vergeet, stopt je functie nooit. Dat is de meest gemaakte fout." },
+    { "t": 69, "text": "Laten we kijken naar een klassiek voorbeeld: de faculteit van een getal." },
+    { "t": 77, "text": "De faculteit van vier is vier maal drie maal twee maal één, dus vierentwintig." },
+    { "t": 86, "text": "Recursief schrijf je dat als: de faculteit van n is n maal de faculteit van n min één." },
+    { "t": 95, "text": "En het basisgeval is de faculteit van nul, die is gelijk aan één." },
+    { "t": 104, "text": "Dus faculteit van vier roept faculteit van drie aan, die roept faculteit van twee aan, enzovoort, tot we bij nul komen." },
+    { "t": 116, "text": "Nu wordt het interessant. Wat gebeurt er eigenlijk in het geheugen als een functie zichzelf aanroept?" },
+    { "t": 125, "text": "Elke aanroep krijgt een eigen frame op de call stack, met zijn eigen waarde voor n." },
+    { "t": 134, "text": "Die frames worden op elkaar gestapeld. Faculteit van vier ligt onderaan, daarboven drie, dan twee, dan één, dan nul." },
+    { "t": 145, "text": "Pas wanneer het basisgeval bereikt is, worden de frames weer afgebouwd, van boven naar beneden." },
+    { "t": 155, "text": "Faculteit van nul geeft één terug aan faculteit van één, die rekent één maal één en geeft dat terug aan faculteit van twee." },
+    { "t": 167, "text": "Zo gaat het verder naar beneden, tot faculteit van vier het eindresultaat vierentwintig teruggeeft." },
+    { "t": 177, "text": "Als je te diep gaat, bijvoorbeeld faculteit van honderdduizend, raakt de stack vol. Dat noemen we een stack overflow." },
+    { "t": 189, "text": "Elke recursieve functie kan je ook herschrijven met een gewone lus. Dat noemen we iteratie." },
+    { "t": 198, "text": "Recursie is vaak korter en leesbaarder, zeker bij bomen en grafen." },
+    { "t": 206, "text": "Iteratie is meestal zuiniger met geheugen, omdat er geen frames op de stack gestapeld worden." },
+    { "t": 216, "text": "In de praktijk kies je dus afhankelijk van de situatie." },
+    { "t": 224, "text": "Tot slot nog kort iets over staartrecursie." },
+    { "t": 231, "text": "Bij staartrecursie is de recursieve aanroep het allerlaatste wat de functie doet." },
+    { "t": 240, "text": "Sommige talen, zoals Scheme, kunnen dat optimaliseren zodat de stack niet groeit." },
+    { "t": 250, "text": "JavaScript en Python doen dat in de praktijk niet, dus daar moet je zelf opletten." },
+    { "t": 260, "text": "Dat was het voor vandaag. Volgende week oefenen we hiermee in het labo." }
+  ]
+}
